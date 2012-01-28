@@ -1,0 +1,315 @@
+#	SCCS Id: @(#)Valkyrie.des	3.4	2002/05/02
+#	Copyright (c) 1989 by Jean-Christophe Collet
+#	Copyright (c) 1991-2 by M. Stephenson
+# NetHack may be freely redistributed.  See license for details.
+#
+#	The "start" level for the quest.
+#
+#	Here you meet your (besieged) class leader, the Norn,
+#	and receive your quest assignment.
+#
+LEVEL: "Val-strt"
+FLAGS: noteleport,hardfloor,mazelevel
+INIT_MAP:solidfill,'I'
+
+# This works because the random coordinates in $pools are evaluated once,
+# when the variable is initialized.
+$pools = selection: random & random & random & random & random &
+	   random & random & random & random & random & random &
+	   random & random &
+	   grow(west, random) &
+	   grow(north, random) &
+	   grow(random & random)
+TERRAIN:grow($pools), 'P'
+TERRAIN:$pools, 'L'
+
+MON_GENERATION:86%, (64,"fire ant"), (16,'a'), (16,"fire giant"), (4,'H')
+GEOMETRY:center,center
+MAP
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxx..xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx...xxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxx..xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx..{..xxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxx..xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.....xxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxx..xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.xxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxx..xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.xxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxx..xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx..xxxxxxxxxxxxxxxxxxx
+xxxxxxxx.....xxxxxxxxxxxxx|----------------|xxxxxxxxxxx.xxxxxxxxxxxxxxxxxxxx
+xxxxxxx..xxx...xxxxxxxxxxx|................|xxxxxxxxxx..xxxxxxxxxxxxxxxxxxxx
+xxxxxx..xxxxxx......xxxxx.|................|.xxxxxxxxx.xxxxxxxxxxxxxxxxxxxxx
+xxxxx..xxxxxxxxxxxx.......+................+...xxxxxxx.xxxxxxxxxxxxxxxxxxxxx
+xxxx..xxxxxxxxx.....xxxxx.|................|.x...xxxxx.xxxxxxxxxxxxxxxxxxxxx
+xxx..xxxxxxxxx..xxxxxxxxxx|................|xxxx.......xxxxxxxxxxxxxxxxxxxxx
+xxxx..xxxxxxx..xxxxxxxxxxx|----------------|xxxxxxxxxx...xxxxxxxxxxxxxxxxxxx
+xxxxxx..xxxx..xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx...xxxxxxxxxxxxxxxxx
+xxxxxxx......xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx...xxxxxxxxxxxxxxx
+xxxxxxxxx...xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx...x......xxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.........xxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.......xxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+ENDMAP
+
+REPLACE_TERRAIN:(00,00,75,19), 'I', 'P', 2%
+
+# Dungeon Description
+REGION:(00,00,75,19),lit,"ordinary"
+REGION:(27,08,42,12),lit,"ordinary"
+# Portal arrival point
+BRANCH:(66,17,66,17),(0,0,0,0)
+# Stairs
+STAIR:(18,01),down
+FOUNTAIN:(53,02)
+# Doors
+DOOR:locked,(26,10)
+DOOR:locked,(43,10)
+# Norn
+MONSTER:('@',"Norn"),(35,10) {
+  OBJECT:'['
+  OBJECT:')'
+  OBJECT:'?'
+  OBJECT:'?'
+}
+# The treasure of the Norn
+OBJECT:('(',"chest"),(36,10)
+# valkyrie guards for the audience chamber
+MONSTER:('@',"warrior"),(27,08) {
+  OBJECT[75%]:'['
+  OBJECT[75%]:')'
+}
+MONSTER:('@',"warrior"),(27,09) {
+  OBJECT[75%]:'['
+  OBJECT[75%]:')'
+}
+MONSTER:('@',"warrior"),(27,11) {
+  OBJECT[75%]:'['
+  OBJECT[75%]:')'
+}
+MONSTER:('@',"warrior"),(27,12) {
+  OBJECT[75%]:'['
+  OBJECT[75%]:')'
+}
+MONSTER:('@',"warrior"),(42,08) {
+  OBJECT[75%]:'['
+  OBJECT[75%]:')'
+}
+MONSTER:('@',"warrior"),(42,09) {
+  OBJECT[75%]:'['
+  OBJECT[75%]:')'
+}
+MONSTER:('@',"warrior"),(42,11) {
+  OBJECT[75%]:'['
+  OBJECT[75%]:')'
+}
+MONSTER:('@',"warrior"),(42,12) {
+  OBJECT[75%]:'['
+  OBJECT[75%]:')'
+}
+# Non diggable walls
+NON_DIGGABLE:(26,07,43,13)
+# Random traps
+LOOP [3 + 3d5] {
+  TRAP:"fire",random
+}
+# Monsters on siege duty.
+MONSTER: ('a',"fire ant"),(04,12)
+MONSTER: ('a',"fire ant"),(08,08)
+MONSTER: ('a',"fire ant"),(14,04)
+MONSTER: ('a',"fire ant"),(17,11)
+MONSTER: ('a',"fire ant"),(24,10)
+MONSTER: ('a',"fire ant"),(45,10)
+MONSTER: ('a',"fire ant"),(54,02)
+MONSTER: ('a',"fire ant"),(55,07)
+MONSTER: ('a',"fire ant"),(58,14)
+MONSTER: ('a',"fire ant"),(63,17)
+MONSTER: ('H',"fire giant"),(18,01),hostile
+MONSTER: ('H',"fire giant"),(10,16),hostile
+
+#
+#	The "locate" level for the quest.
+#
+#	Here you have to find the cave of Surtur to go
+#	further towards your assigned quest.
+#
+
+LEVEL: "Val-loca"
+FLAGS: hardfloor,mazelevel
+INIT_MAP: mines, '.' , 'I' , true , true , lit , false
+MON_GENERATION:86%, (64,"fire ant"), (16,'a'), (16,"fire giant"), (4,'H')
+GEOMETRY:center,center
+MAP
+PPPP....                      ....PPPPP.
+PLP...                          .PPLLLPP
+PPP    .......................    PPPLLP
+..   ............................   PPPP
+.  ...............................  ....
+  .................................   ..
+....................................   .
+  ...................................   
+.  ..................................  .
+..   ..............................   PP
+.PPP  ..........................     PLP
+.PLLP                             ..PLLP
+.PPPP..                         ....PPPP
+ENDMAP
+# Dungeon Description
+REGION:(00,00,39,12),lit,"ordinary"
+# Stairs
+STAIR:(48,14),up
+STAIR:(20,06),down
+# Non diggable walls
+NON_DIGGABLE:(00,00,39,12)
+# Objects
+LOOP [6 + 3d5] {
+  OBJECT:random,random
+}
+# Random traps
+LOOP [2 + 3d5] {
+  TRAP:"fire",random
+}
+TRAP:random,random
+TRAP:random,random
+# Random monsters.
+LOOP [10 + 3d5] {
+  MONSTER:('a',"fire ant"),random
+}
+MONSTER:'a',random
+MONSTER:'H',random,hostile
+LOOP [2 + 3d5] {
+  MONSTER:('H',"fire giant"),random,hostile
+}
+MONSTER:'H',random,hostile
+
+#
+#	The "goal" level for the quest.
+#
+#	Here you meet Lord Surtur your nemesis monster.  You have to
+#	defeat Lord Surtur in combat to gain the artifact you have
+#	been assigned to retrieve.
+#
+
+LEVEL: "Val-goal"
+FLAGS:mazelevel
+INIT_MAP: mines, '.' , 'L' , true , true , lit , false
+MON_GENERATION:86%, (64,"fire ant"), (16,'a'), (16,"fire giant"), (4,'H')
+GEOMETRY:center,center
+MAP
+xLxxxx......................xxLLLLL
+LLLx........LLLLL.LLLLL.......xxLLL
+xLLL......LLLLLLLLLLLLLLL......xLLx
+xLLL.....LLL|---------|LLL.....Lxxx
+xxLL....LL|--.........--|LL.....LLL
+x......LL|-...LLLLLLL...-|LL.....Lx
+.......LL|...LL.....LL...|LL.......
+......LL|-..LL.......LL..-|LL......
+......LL|.................|LL......
+......LL|-..LL.......LL..-|LL......
+.......LL|...LL.....LL...|LL.......
+.......LL|-...LLLLLLL...-|LL......x
+x.L.....LL|--.........--|LL.....LLx
+xxLL.....LLL|---------|LLL....LLLLx
+xxLLL.....LLLLLLLLLLLLLLL...LLLLLxx
+xLLLL.......LLLLL.LLLLL.....LLLLxxx
+xxLLxxx....................xxxxxxxx
+ENDMAP
+# Dungeon Description
+REGION:(00,00,34,16),lit,"ordinary"
+# Stairs
+# Note:  The up stairs are *intentionally* off of the map.
+STAIR:(45,10),up
+# Non diggable walls
+NON_DIGGABLE:(00,00,34,16)
+# Drawbridges
+DRAWBRIDGE:(17,02),south,random
+DRAWBRIDGE:(17,14),north,random
+# Objects
+OBJECT:('(',"crystal ball"),(17,08),blessed,5,NAME:"The Orb of Fate"
+LOOP [4 + 3d5] {
+  OBJECT:random,random
+}
+# Traps
+TRAP:"board",(13,08)
+TRAP:"board",(21,08)
+# Random traps
+LOOP [2 + 2d3] {
+  TRAP:"fire",random
+}
+TRAP:"board",random
+TRAP:random,random
+TRAP:random,random
+# Random monsters.
+MONSTER:('H',"Lord Surtur"),(17,08) {
+  OBJECT:('(', "Bell of Opening"),uncursed
+  OBJECT:'['
+  OBJECT:')'
+  OBJECT:random
+  OBJECT:random
+}
+LOOP [2 + 2d3] {
+  MONSTER:('a',"fire ant"),random
+}
+MONSTER:'a',random
+MONSTER:'a',random
+REGION:(10,6,10,6),lit,"ordinary",filled,irregular {
+  LOOP [5 + 4d3] {
+    MONSTER:('H',"fire giant"),random,hostile
+  }
+}
+MONSTER:('H',"fire giant"),random,hostile
+MONSTER:('H',"fire giant"),random,hostile
+MONSTER:'H',random,hostile
+
+#
+#	The "fill" levels for the quest.
+#
+#	These levels are used to fill out any levels not occupied by specific
+#	levels as defined above. "filla" is the upper filler, between the
+#	start and locate levels, and "fillb" the lower between the locate
+#	and goal levels.
+#
+
+LEVEL: "Val-fila"
+FLAGS:mazelevel,noflip
+INIT_MAP: mines, '.' , 'I' , true , true , lit, false
+MON_GENERATION:86%, (64,"fire ant"), (16,'a'), (16,"fire giant"), (4,'H')
+NOMAP
+#
+STAIR: random, up
+STAIR: random, down
+#
+LOOP [5 + 2d3] {
+  OBJECT: random, random
+}
+#
+LOOP [2 + 2d2] {
+  MONSTER: ('a', "fire ant"), random
+}
+MONSTER: 'a', random
+MONSTER: ('H', "fire giant"), random, hostile
+#
+LOOP [6 + 2d2] {
+  TRAP: random, random
+}
+
+LEVEL: "Val-filb"
+FLAGS:mazelevel,noflip
+INIT_MAP: mines, '.' , 'L' , true , true , lit, false
+MON_GENERATION:86%, (64,"fire ant"), (16,'a'), (16,"fire giant"), (4,'H')
+NOMAP
+#
+STAIR: random, up
+STAIR: random, down
+#
+LOOP [8 + 2d2] {
+  OBJECT: random, random
+}
+#
+LOOP [3 + 2d2] {
+  MONSTER: ('a', "fire ant"), random
+  MONSTER[80%]: ('H', "fire giant"), random, hostile
+}
+MONSTER: 'a', random
+#
+LOOP [3 + 3d2] {
+  TRAP: "fire", random
+}
+TRAP: random, random
+TRAP: random, random
